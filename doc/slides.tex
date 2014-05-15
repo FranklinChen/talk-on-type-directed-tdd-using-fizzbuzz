@@ -1,0 +1,550 @@
+\usepackage{minted}
+
+% Hour-long talk
+
+\title{Exploring type-directed, test-driven development using FizzBuzz}
+\author{Franklin Chen \\ \url{http://franklinchen.com/}}
+\date{Pittsburgh Scala Meetup \\
+May 15, 2014
+}
+% TODO
+%\date{\href{http://www.pghtechfest.com/}{Pittsburgh Tech Fest 2014} \\
+%June 7, 2014
+%}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%\section*{Outline}
+%\begin{frame}
+%  \frametitle{Outline}
+%  \tableofcontents[pausesections]
+%\end{frame}
+
+\begin{frame}
+  \frametitle{Types versus tests?}
+
+  \begin{itemize}
+  \item I don't like flame wars.
+  \item I like to use every available helpful tool when programming.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Types are surprisingly underrated}
+
+  \begin{itemize}
+  \item Archaic, painful type systems stuck in the 1970s: C, C++, Java.
+  \item Reasonable type systems: Haskell, OCaml, F\#, Scala.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Purpose of this talk}
+
+  \begin{itemize}
+  \item A case study in using a type-directed mindset, in conjunction with a test-driven process.
+  \item Why \texttt{FizzBuzz}? Easy to understand and modify.
+  \item Only a tiny taste of how to use types.
+  \item I will use only one ``m''-word.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The basic user story}
+
+  Given:
+  \begin{itemize}
+  \item \href{http://martinfowler.com/bliki/UserStory.html}{User story} for the \href{http://c2.com/cgi/wiki?FizzBuzzTest}{FizzBuzz problem}.
+
+  \begin{quotation}
+Write a program that prints the numbers from 1 to 100. But for multiples of three, print ``Fizz'' instead of the number. And for the multiples of five, print ``Buzz''. For numbers which are multiples of both three and five, print ``FizzBuzz''.
+  \end{quotation}
+
+  \item It could change.
+  \item There could be more user stories.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Implicit assumptions?}
+
+  Not everything is fully specified:
+  \begin{itemize}
+  \item ``Print'' to where? To terminal window? To Web page?
+  \item How should the output be formatted?
+  \item Does the order of output matter?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Make initial decisions}
+
+  Judgment calls:  
+  \begin{itemize}
+  \item Don't over-engineer up front.
+  \item Do make note of assumptions, in case they change.
+  \end{itemize}
+
+  We will initially assume:
+  \begin{itemize}
+  \item Command-line application with text output.
+  \item Each number's output on its own line.
+  \item Output lines in order, not interleaved.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Use a walking skeleton}
+
+  Do not waste time doing just the simplest possible thing.
+
+  \begin{itemize}
+  \item End-to-end with a \href{http://blog.codeclimate.com/blog/2014/03/20/kickstart-your-next-project-with-a-walking-skeleton/}{walking skeleton}.
+  \item We know we will \emph{generalize} to output to an arbitrary output stream.
+  \item We know we will \emph{generalize} to input of any range of integers.
+  \end{itemize}
+
+  Starter \href{http://www.scala-lang.org/}{Scala} code:
+  \inputminted{scala}{Main1.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Unimplemented code}
+
+  \href{http://www.scala-lang.org/api/2.11.0/index.html\#scala.Predef$}{\texttt{???}} is actually Scala code:
+  \begin{itemize}
+  \item Added to Scala for version 2.10 in January 2013.
+  \item When executed, throws \texttt{NotImplementedError} exception.
+  \item Convenient for TDD: do not need to write pointless ``stub'' code that might result in accidents.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{First test: an acceptance test}
+
+  Top-down, outside-in design.
+
+  Use Scala testing framework \href{http://specs2.org/}{specs2}, which supports:
+  \begin{itemize}
+  \item Unit specifications.
+  \item Acceptance specifications.
+  \end{itemize}
+
+  \inputminted{scala}{MainSpec1.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Expected output, as string}
+
+  \inputminted{scala}{MainSpec2.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Continuous compilation and testing}
+
+  I use \href{http://www.scala-sbt.org/}{SBT}, the build tool supporting Scala, Java, etc:
+  \begin{itemize}
+  \item \href{http://www.scala-sbt.org/release/docs/Detailed-Topics/Triggered-Execution.html}{Continuous, incremental compilation}! Source file changes trigger smart recompilation.
+  \item Continuous, incremental testing! Source file changes trigger rerun of tests depending on changed code.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The test does not compile}
+
+  \begin{minted}{console}
+$ sbt
+> ~testQuick
+  \end{minted}
+
+  \begin{minted}{console}
+...src/test/scala/com/franklinchen/MainSpec.scala:10:
+val runToString is not a member of
+object com.franklinchen.Main
+  ${Main.runToString(1, 16) ==== `expected for 1 to 16`}
+         ^
+one error found
+(test:compile) Compilation failed
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Make the test compile and fail}
+
+  Create the skeleton for \texttt{Main.runToString}:
+  \inputminted{scala}{Main2.scala}
+
+  The test now compiles, but fails:
+  \begin{minted}{console}
+MainSpec
+  x Main.runToString(1, 16) ==== `expected for 1 to 16
+  an implementation is missing (Main.scala:31)
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Start filling in code}
+
+  \inputminted{scala}{Main3.scala}
+
+  \begin{itemize}
+  \item \texttt{runToString} just uses \texttt{runToStream}.
+  \item It compiles.
+  \item Top-down: still have not implemented \texttt{runToStream}.
+  \item Did not bother to write a test for \texttt{runToString}.
+  \item Candidate for refactoring into utility function; but now is not the time.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Outside-in: toward a \texttt{FizzBuzz} unit}
+
+  Use of \emph{types} to drive \emph{functional programming}:
+  \inputminted{scala}{Main4.scala}
+
+  Follow the pipeline of types\footnote{simplified for clarity}:
+  \begin{itemize}
+  \item \texttt{(start to end): Seq[Int]}, where \href{http://www.scala-lang.org/api/2.11.0/index.html\#scala.collection.Seq}{\texttt{Seq[\_])}} is a type constructor that given a type \texttt{A}, returns a type of \texttt{Seq[A]}.
+  \item We need to implement \texttt{FizzBuzz.output: Int => String}.
+  \item Mapping through \texttt{Int => String} gives \texttt{Seq[String]}.
+  \item More generally, for any types \texttt{A} and \texttt{B}, mapping \texttt{Seq[A]} through \texttt{A => B} gives \texttt{Seq[B]}.
+  \item \texttt{foreach} on a \texttt{Seq[A]} through \texttt{A => Unit} gives \texttt{Unit}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Starting the \texttt{FizzBuzz} module}
+
+  \inputminted{scala}{FizzBuzz1.scala}
+
+  \begin{itemize}
+  \item Acceptance test drove the need for a unit.
+  \item Implementing outside-in drove the discovery of a needed type, \texttt{Int => String}.
+  \item For clarity, name the type (\texttt{Outputter}).
+  \end{itemize}
+
+  Time to write unit tests!
+
+  Start with an \emph{example-based} test:
+  \inputminted{scala}{FizzBuzzSpec1.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Property-based vs. example-based tests}
+
+  Use \href{http://scalacheck.org/}{ScalaCheck} to write \emph{property-based} tests:
+  \begin{itemize}
+  \item Automatically randomly-generated tests (default to 100).
+  \item Completely \emph{type-driven}: here, random \texttt{Int} values are generated.
+  \end{itemize}
+
+  \inputminted{scala}{FizzBuzzSpec2.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Property tests, continued}
+
+  (continued)
+  \inputminted{scala}{FizzBuzzSpec3.scala}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Booleans are evil!}
+
+  Do not enter the \href{http://en.wikiquote.org/wiki/Colossal\_Cave\_Adventure}{maze of twisty little conditionals, all different}!
+  \begin{itemize}
+  \item Conditions can be arbitrary: depend on \emph{any} combination of data.
+  \item A computation leading to a Boolean value by essence \href{http://existentialtype.wordpress.com/2011/03/15/boolean-blindness/}{loses information about the original data}.
+  \item Multiple conditions: combinatorial explosion (two conditions led to four cases).
+  \item Possibly overlapping conditions: order dependency subtleties.
+  \item Possibly duplicated checking of the some condition.
+  \item Copy-and-paste eyesore of three almost-identical property-based tests and a fourth slightly different one.
+  \item \textbf{No help from type system to catch wrongly written sets of nested, combined conditionals}.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Thought-driven development}
+
+  The core of software development: not \emph{coding}, but \emph{thinking}!
+
+  Observations:
+  \begin{itemize}
+  \item Treating \texttt{"FizzBuzz"} as an atomic unit ignores information: it is really a concatenation (\emph{sum}) of \texttt{"Fizz"} and \texttt{"Buzz"}.
+  \item The output string, when at least \emph{some} condition holds, is the sum of output strings for each condition, if we consider a failed condition to map to an \emph{empty} string.
+  \item Special case: when \emph{no} condition holds, by the rule above, we would expect an empty string; but instead, we should get the numerical string.
+  \end{itemize}
+
+  What now?
+  \begin{itemize}
+  \item Stop thinking, just write some code now that we have tests?
+  \item Think more?
+  \end{itemize}
+
+  A judgment call.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Naive implementation of \texttt{FizzBuzz}}
+
+  Write the implementation straight from the tests, using pattern matching:
+  \inputminted{scala}{FizzBuzz2.scala}
+
+  This works.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Acceptance test passed!}
+
+  \begin{minted}{console}
+MainSpec
+   + Main.runToString(1, 16) ==== `expected for 1 to 16
+  \end{minted}
+
+  Are we done?
+\end{frame}
+
+\begin{frame}
+  \frametitle{Changing the user story}
+
+  In the real world, we are \emph{never} ``done''.
+
+  Our users are demanding the ability to customize \texttt{FizzBuzz}.
+
+  \begin{itemize}
+  \item Someone wants to choose two numbers other than 3 and 5.
+  \item Someone is offended by the words ``fizz'' and ``buzz'' and wants to choose different words to be output.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Refactoring with types}
+
+  \begin{itemize}
+  \item Add new tests.
+  \item Change types and code just enough to make the new tests \emph{type check}.
+  \item Refactor the original \texttt{FizzBuzz} to use the new APIs.
+  \item The modified \texttt{FizzBuzz} must still pass the old tests.
+  \end{itemize}
+\end{frame}
+
+%\begin{frame}
+%  \frametitle{More features means adding types}
+%
+%  \begin{itemize}
+%  \item Create \texttt{Defaults} module.
+%  \item Rid \texttt{FizzBuzz.output}.
+%  \item Change \texttt{Main} to call an unwritten \texttt{Defaults.fizzBuzzer}.
+%  \item Add types and starter code to \texttt{FizzBuzz} as needed.
+%  \item Get everything type checked and compiled.
+%  \end{itemize}
+%\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{More features means adding types}
+
+  Changes to \texttt{Main}:
+  \inputminted{scala}{Main5.scala}
+
+  Changes to \texttt{FizzBuzz}:
+  \inputminted{scala}{FizzBuzz3.scala}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Extract defaults}
+
+  \inputminted{scala}{Defaults1.scala}
+\end{frame}
+
+%\begin{frame}
+%  \frametitle{Make tests compile again}
+%
+%  \begin{itemize}
+%  \item Change \texttt{FizzBuzz.output} to \texttt{Defaults.fizzBuzzer}.
+%  \item The tests fail, of course.
+%  \end{itemize}
+%\end{frame}
+
+\begin{frame}
+  \frametitle{Generalizing the \texttt{FizzBuzz} problem}
+
+  A deep fact of mathematics and computer science: solving a \emph{harder} problem is often the path toward understanding and efficiently solving an easier problem!
+
+  Consider a \texttt{FizzBuzzPop} problem:
+  \begin{itemize}
+  \item Test multiples of 3, 5, 7.
+  \item Output a total string combining segments of \texttt{"Fizz"}, \texttt{"Buzz"}, \texttt{"Pop"}, or a numerical string if not a multiple of any of 3, 5, 7.
+  \end{itemize}
+
+  Example:
+  \begin{itemize}
+  \item \texttt{21} should result in \texttt{"FizzPop"}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Document all our thoughts}
+
+  To clarify our thinking, write some new tests, with no intention of working on making them pass yet:
+  \inputminted{scala}{FizzBuzzSpec5.scala}
+
+  Since \texttt{FizzBuzzPop} is popular, put it into \texttt{Defaults}:
+  \inputminted{scala}{Defaults2.scala}
+\end{frame}
+
+\begin{frame}
+  \frametitle{More than 2 is ``many''!}
+
+  \begin{itemize}
+  \item We do not want to hard-code some new solution for the case of 3 words.
+  \item Instead, solve the \href{http://c2.com/cgi/wiki?ZeroOneInfinityRule}{general case} of ``many'' (2 or more) words, with user-specified mapping of numbers to words.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Even more types}
+
+  Try to represent every idea as a type:
+  \begin{itemize}
+  \item Each configuration number (such as 3, 5, or 7 in \texttt{FizzBuzzPop}) should result in a \emph{rule} that can be applied to any input number to get a string.
+  \item Once we have a bunch of rules, we can apply them all to the input, then combine the partial results.
+  \end{itemize}
+
+  \inputminted{scala}{FizzBuzz4.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Type-directed programming: solving a jigsaw puzzle}
+
+  \inputminted{scala}{FizzBuzz5.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Generalize our tests}
+
+  A sample generalized test over user word choices:
+  \inputminted{scala}{FizzBuzzSpec6.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Test failure reflecting poor use of types}
+
+  Did you see this coming?
+  \begin{minted}{console}
+x Arbitrary word fizzBuzzers on a multiple of 3
+A counter-example is ['', ''] (after 0 try)
+A counter-example is '1029'
+  (after 0 try - shrinked ('1138893201' -> '1029'))
+'1029' is not equal to '' (FizzBuzzSpec.scala:58)
+  \end{minted}
+
+  A good example of the usefulness of property-based testing!
+  \begin{itemize}
+  \item Empty ``fizz'' and ``buzz'' words are a strange corner case.
+  \item Unexpected ambiguity: intended behavior was for a number to be output only if the given number is not a multiple of any of the factors, but 1029 is a multiple of 3.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{An empty string is not equivalent to no string}
+
+  Presence of something ``empty'' is not equivalent to the absence of something (contrary to how some programming languages work).
+
+  \begin{itemize}
+  \item Problem: special case condition, testing for an empty string, conflated an empty combined string with ``failed to be a multiple at all''.
+  \item Solution: add use of another type.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{\texttt{Option[A]}}
+
+  \texttt{Option[A]} is one of two possibilities:
+  \begin{itemize}
+  \item \texttt{None}
+  \item \texttt{Some(a)} for some value \texttt{a} of type \texttt{A}.
+  \end{itemize}
+
+  For example, \texttt{Some("")} is not the same as \texttt{None}:
+  \inputminted{scala}{OptionExample1.scala}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Cleaning up the types}
+
+  Change type \texttt{Rule}:
+  \inputminted{scala}{FizzBuzz6.scala}
+
+  Immediately get type errors:
+  \begin{minted}{console}
+ found   : String
+ required: Option[String]
+    i => if (i % n == 0) word else ""
+                         ^
+ found   : String("")
+ required: Option[String]
+    i => if (i % n == 0) word else ""
+                                   ^
+ found   : Seq[Option[String]]
+ required: Seq[String]
+    val words: Seq[String] = rules.map { rule => rule(i) }
+                                       ^
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fix the type errors}
+
+  \inputminted{scala}{FizzBuzz7.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Monoids}
+
+  We implemented an ``addition'' for \texttt{Option[String]}:
+  \inputminted{scala}{FizzBuzz8.scala}
+  
+  \href{http://en.wikipedia.org/wiki/Monoid}{Monoid}:
+  \begin{itemize}
+  \item There is an identity element.
+  \item There is a binary associative operator.
+  \end{itemize}
+
+  More generally: \texttt{Option[A]} is a monoid if \texttt{A} is a monoid.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parallelism}
+
+  \begin{itemize}
+  \item All code here using \emph{map} can be parallelized\footnote{Scala provides parallel collections}.
+  \item The one place where \emph{reduce} is used can be parallelized because of the monoid property.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Conclusion}
+
+  \begin{itemize}
+  \item Tests are useful.
+  \item Types are useful.
+  \item Thinking is useful.
+  \end{itemize}
+
+  \begin{itemize}
+  \item Tests and types work great together.
+  \item Try to encode your thoughts in types and tests.
+  \end{itemize}
+
+  All materials for this talk are available at \url{https://github.com/franklinchen/talk-on-type-directed-tdd-using-fizzbuzz}. The hyperlinks on the slide PDFs are clickable.
+\end{frame}
+
+\end{document}
