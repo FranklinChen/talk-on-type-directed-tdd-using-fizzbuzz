@@ -1,10 +1,10 @@
-name := "talk-on-type-directed-tdd-with-fizzbuzz"
+name := "talk-on-type-directed-tdd-using-fizzbuzz"
 
 organization := "com.franklinchen"
 
 organizationHomepage := Some(url("http://franklinchen.com/"))
 
-homepage := Some(url("http://github.com/FranklinChen/talk-on-type-directed-tdd-with-fizzbuzz"))
+homepage := Some(url("http://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz"))
 
 startYear := Some(2014)
 

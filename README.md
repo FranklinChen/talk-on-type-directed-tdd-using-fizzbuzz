@@ -1,6 +1,6 @@
 ## Talk: "Type-directed TDD with FizzBuzz"
 
-[![Build Status](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-with-fizzbuzz.png)](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-with-fizzbuzz)
+[![Build Status](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz.png)](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz)
 
 Presentation for Pittsburgh TechFest 2014, June 7, 2014.
 
