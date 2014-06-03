@@ -69,5 +69,5 @@ class FizzBuzzSpec extends Specification
         (i % d1 == 0 && i % d2 != 0) ==>
         { runner(i) ==== w1 }
       }
-    }.set(maxDiscardRatio = 300)
+    }.set(maxDiscardRatio = 1000)
 }
