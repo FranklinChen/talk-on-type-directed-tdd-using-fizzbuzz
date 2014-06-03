@@ -1,16 +1,16 @@
 object Defaults {
-  val wordMap: FizzBuzz.WordMap =
-    SortedMap(3 -> "Fizz", 5 -> "Buzz")
+  val fizzBuzzerConfig: Config =
+    Config(3 -> "Fizz", 5 -> "Buzz")
 
-  val fizzBuzzer: FizzBuzz.Outputter =
-    FizzBuzz.compile(wordMap)
-  }
+  val fizzBuzzer: Evaluator =
+    FizzBuzz.compile(fizzBuzzerConfig)
 
-  val oldFizzBuzzer: FizzBuzz.Outputter = { i =>
+  // Useful to keep old implementation
+  val oldFizzBuzzer: Evaluator = { i =>
     (i % 3 == 0, i % 5 == 0) match {
-      case (true, true) => "FizzBuzz"
-      case (true, false) => "Fizz"
-      case (false, true) => "Buzz"
+      case (true,  false) => "Fizz"
+      case (false, true)  => "Buzz"
+      case (true,  true)  => "FizzBuzz"
       case (false, false) => i.toString
     }
   }

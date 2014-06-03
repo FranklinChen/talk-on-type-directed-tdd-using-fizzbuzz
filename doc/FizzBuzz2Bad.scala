@@ -3,6 +3,5 @@
       case (true,  false) => "Fizz"
       case (false, true)  => "Buzz"
       case (true,  true)  => "FizzBuzz"
-      case (false, false) => i.toString
     }
   }

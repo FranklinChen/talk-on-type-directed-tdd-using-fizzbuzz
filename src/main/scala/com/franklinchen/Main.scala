@@ -1,9 +1,6 @@
 package com.franklinchen
 
-import java.io.PrintStream
-import java.io.ByteArrayOutputStream
-
-object Main {
+object Main extends App {
   /**
     http://c2.com/cgi/wiki?FizzBuzzTest
 
@@ -16,21 +13,9 @@ object Main {
     For numbers which are multiples of both three and five,
       print "FizzBuzz".
     */
-  def main(args: Array[String]): Unit = {
-    runToStream(1, 100, Console.out)
-  }
+  runToSeq(1, 100) foreach println
 
-  def runToStream(start: Int, end: Int,
-    stream: PrintStream): Unit = {
-    (start to end).
-      map(Defaults.fizzBuzzer).
-      foreach(stream.println)
-  }
-
-  def runToString(start: Int, end: Int): String = {
-    val outputStream = new ByteArrayOutputStream
-    val stream = new PrintStream(outputStream)
-    runToStream(start, end, stream)
-    outputStream.toString
+  def runToSeq(start: Int, end: Int): Seq[String] = {
+    (start to end) map Defaults.fizzBuzzer
   }
 }

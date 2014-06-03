@@ -1,12 +1,3 @@
 target
 .ensime*
 .idea*
-*.iml
-*.aux
-*.log
-*.nav
-*.out
-*.snm
-*.toc
-*.vrb
-*.pyg

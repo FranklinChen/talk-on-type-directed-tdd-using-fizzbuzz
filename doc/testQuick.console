@@ -1,0 +1,8 @@
+$ sbt
+> ~testQuick
+[info] Compiling 1 Scala source to ...
+[error] ...Main.scala:16: not found: value runToSeq
+[error]   runToSeq(1, 100) foreach println
+[error]   ^
+[error] one error found
+[error] (compile:compile) Compilation failed

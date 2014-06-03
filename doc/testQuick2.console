@@ -1,0 +1,4 @@
+Waiting for source changes... (press enter to interrupt)
+[info] MainSpec
+[info]   x Main.runToSeq(1, 16) ==== `strings for 1 to 16
+[error]  an implementation is missing (Main.scala:19)

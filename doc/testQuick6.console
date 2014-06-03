@@ -1,0 +1,5 @@
+[info]   ! Arbitrary divisor/word pair fizzBuzzers
+[error]  ArithmeticException: :
+         A counter-example is 'Config((0,),(0,))':
+         java.lang.ArithmeticException: / by zero
+         (after 0 try)  (FizzBuzzSpec.scala:58)

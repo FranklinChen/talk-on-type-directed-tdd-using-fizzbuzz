@@ -1,0 +1,4 @@
+[info] FizzBuzzSpec
+[info]   x FizzBuzz.evaluate(15) ==== "FizzBuzz"
+[error]  'Fizz' is not equal to 'FizzBuzz'
+            (FizzBuzzSpec.scala:14)

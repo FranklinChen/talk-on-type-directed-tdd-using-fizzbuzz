@@ -1,0 +1,12 @@
+found   : String
+required: Option[String]
+       word
+       ^
+found   : String("")
+required: Option[String]
+       ""
+       ^
+found   : Seq[Option[String]]
+required: Seq[String]
+       val words: Seq[String] = rules map { rule => rule(i) }
+                                      ^

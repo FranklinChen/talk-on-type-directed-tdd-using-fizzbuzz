@@ -1,0 +1,7 @@
+[info]   x Arbitrary pair of divisors: divisible by first
+[error]  A counter-example is 'Config(List((8,), (32,)))'
+  (after 0 try)
+[error]  A counter-example is '32405464'
+  (after 0 try - shrinked ('1150076488' -> '32405464'))
+[error]  '32405464' is not equal to ''
+  (FizzBuzzSpec.scala:71)

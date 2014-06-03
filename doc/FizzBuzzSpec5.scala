@@ -1,5 +1,4 @@
   def is = s2"""
-  ...
   ${Defaults.fizzBuzzPopper(2) ==== "2"}
   ${Defaults.fizzBuzzPopper(21) ==== "FizzPop"}
   ${Defaults.fizzBuzzPopper(9) ==== "Fizz"}

@@ -1,0 +1,2 @@
+[info] MainSpec
+[info]   + Main.runToSeq(1, 16) ==== `strings for 1 to 16

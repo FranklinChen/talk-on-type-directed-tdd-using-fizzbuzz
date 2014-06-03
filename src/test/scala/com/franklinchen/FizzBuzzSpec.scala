@@ -6,7 +6,7 @@ import Gen._
 import Arbitrary.arbitrary
 import org.scalacheck.Prop._
 
-import scala.collection.immutable.SortedMap
+import FizzBuzz._
 
 class FizzBuzzSpec extends Specification
     with ScalaCheck { def is = s2"""
@@ -26,7 +26,7 @@ class FizzBuzzSpec extends Specification
   ${Defaults.fizzBuzzPopper(7) ==== "Pop"}
   ${Defaults.fizzBuzzPopper(35) ==== "BuzzPop"}
 
-  ${`Arbitrary word fizzBuzzers on a multiple of 3`}
+  ${`Arbitrary pair of divisors: divisible by first`}
   """
 
   def `Multiple of both 3 and 5 => "FizzBuzz"` =
@@ -49,13 +49,25 @@ class FizzBuzzSpec extends Specification
       { Defaults.fizzBuzzer(i) ==== i.toString }
     }.set(maxDiscardRatio = 30)
 
-  def `Arbitrary word fizzBuzzers on a multiple of 3` =
-    prop { (fizz: String, buzz: String) =>
-      val fizzBuzzer = FizzBuzz.compile(
-        SortedMap(3 -> fizz, 5 -> buzz)
-      )
-      prop { i: Int => (i % 3 == 0 && i % 5 != 0) ==>
-        { fizzBuzzer(i) ==== fizz }
-      }.set(maxDiscardRatio = 30)
+  // TODO: need to generalize to more than 2
+  val arbitraryConfig: Arbitrary[Config] =
+    Arbitrary {
+      for {
+        d1 <- choose(DIVISOR_MIN, DIVISOR_MAX)
+        d2 <- choose(DIVISOR_MIN, DIVISOR_MAX)
+        w1 <- arbitrary[String]
+        w2 <- arbitrary[String]
+      } yield Config(Seq(d1 -> w1, d2 -> w2))
     }
+
+  def `Arbitrary pair of divisors: divisible by first` =
+    arbitraryConfig { config: Config =>
+      val runner = FizzBuzz.compile(config)
+      // TODO: non-exhaustive
+      val Config(Seq((d1, w1), (d2, _))) = config
+      prop { i: Int =>
+        (i % d1 == 0 && i % d2 != 0) ==>
+        { runner(i) ==== w1 }
+      }
+    }.set(maxDiscardRatio = 300)
 }

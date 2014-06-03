@@ -1,7 +1,10 @@
-type Rule = Int => String
-type Rules = Seq[Rule]
-type RuleBuilder = ((Int, String)) => Rule
+  type Rule = Int => String
 
-val buildRule: RuleBuilder = { case (n, word) =>
-  i => ???
-}
+  val buildRule: ((Int, String)) => Rule = {
+    case (n, word) => { i =>
+      if (i % n == 0)
+        word
+      else
+        ""
+    }
+  }

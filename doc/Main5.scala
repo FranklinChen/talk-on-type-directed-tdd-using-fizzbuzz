@@ -1,6 +1,3 @@
-  def runToStream(start: Int, end: Int,
-    stream: PrintStream): Unit = {
-    (start to end).
-      map(Defaults.fizzBuzzer).
-      foreach(stream.println)
+  def runToSeq(start: Int, end: Int): Seq[String] = {
+    (start to end) map Defaults.fizzBuzzer
   }

@@ -1,9 +1,16 @@
-  def `Arbitrary word fizzBuzzers on a multiple of 3` =
-    prop { (fizz: String, buzz: String) =>
-      val fizzBuzzer = FizzBuzz.compile(
-        SortedMap(3 -> fizz, 5 -> buzz)
-      )
-      prop { i: Int => (i % 3 == 0 && i % 5 != 0) ==>
-        { fizzBuzzer(i) ==== fizz }
+  val arbitraryConfig: Arbitrary[Config] =
+    Arbitrary { for {
+      (d1, d2, w1, w2) <-
+        arbitrary[(Int, Int, String, String)]
+      } yield Config(d1 -> w1, d2 -> w2)
+    }
+
+  def `Arbitrary pair of divisors: divisible by first` =
+    arbitraryConfig { config: Config =>
+      val runner = FizzBuzz.compile(config)
+      val Config((d1, w1), (d2, _)) = config
+      prop { i: Int =>
+        (i % d1 == 0 && i % d2 != 0) ==>
+        { runner(i) ==== w1 }
       }
     }

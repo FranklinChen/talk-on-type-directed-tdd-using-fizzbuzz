@@ -1,0 +1,7 @@
+[error] ...Defaults.scala:29: not enough arguments for
+  method apply:
+  (pair1: (Int, String), pair2: (Int, String))
+  com.franklinchen.FizzBuzz.Config in object Config
+[error] Unspecified value parameter pair2.
+[error]     Config(Seq(
+[error]           ^

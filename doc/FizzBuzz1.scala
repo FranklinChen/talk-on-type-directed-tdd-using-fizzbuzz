@@ -1,5 +1,7 @@
 object FizzBuzz {
-  type Outputter = Int => String
+  type Evaluator = Int => String
 
-  val output: Outputter = ???
+  val evaluate: Evaluator = { i =>
+    ???
+  }
 }

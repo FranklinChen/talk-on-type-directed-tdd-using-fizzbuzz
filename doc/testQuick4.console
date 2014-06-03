@@ -1,0 +1,4 @@
+[warn] ...FizzBuzz.scala:46: match may not be exhaustive.
+[warn] It would fail on the following input: (false, false)
+[warn]     (i % 3 == 0, i % 5 == 0) match {
+[warn]     ^

@@ -1,0 +1,13 @@
+*.iml
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+*.pyg
+*.fls
+*_latexmk
+auto/
+.minted*
