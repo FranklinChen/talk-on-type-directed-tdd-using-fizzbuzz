@@ -29,5 +29,5 @@ trait FizzBuzzPopSpec extends Specification
         (i % d1 == 0 && i % d2 != 0 && i % d3 != 0) ==>
         { evaluate(i) ==== w1 }
       }
-    }.set(maxDiscardRatio = 1000)
+    }.set(maxDiscardRatio = 10000)
 }
