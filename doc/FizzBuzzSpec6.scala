@@ -7,10 +7,10 @@
 
   def `Arbitrary pair of divisors: divisible by first` =
     arbitraryConfig { config: Config =>
-      val runner = FizzBuzz.compile(config)
+      val evaluator = FizzBuzz.compile(config)
       val Config((d1, w1), (d2, _)) = config
       prop { i: Int =>
         (i % d1 == 0 && i % d2 != 0) ==>
-        { runner(i) ==== w1 }
+        { evaluator(i) ==== w1 }
       }
     }

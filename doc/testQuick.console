@@ -5,4 +5,4 @@ $ sbt
 [error]   runToSeq(1, 100) foreach println
 [error]   ^
 [error] one error found
-[error] (compile:compile) Compilation failed
+
