@@ -1,7 +1,12 @@
 package com.franklinchen
 
+import scalaz._
+import Scalaz._
+
 import scala.collection.par._
 import Scheduler.Implicits.global
+
+import Utils.addOption
 
 /** Implementations of FizzBuzz algorithm. */
 object FizzBuzz {
@@ -19,7 +24,7 @@ object FizzBuzz {
   }
 
   case class Config(pairs: Seq[(Int, String)]) {
-    pairs foreach validatePair
+    pairs.foreach(validatePair)
   }
 
   type Compiler = Config => Evaluator
@@ -29,48 +34,37 @@ object FizzBuzz {
   val buildRule: ((Int, String)) => Rule = {
     case (n, word) => {
       i =>
-      if (i % n == 0)
-        Some(word)
-      else
-        None
+      (i % n == 0).option(word)
     }
   }
 
-  val compile: Compiler = {
-    case Config(pairs) =>
+  val compile: Compiler = { case Config(pairs) =>
       // Precompute, hence "compiler".
-      val rules: Seq[Rule] = pairs map buildRule
+      val rules: Seq[Rule] = pairs.map(buildRule)
 
       // Return an Evaluator.
       { i =>
         val wordOptions: Seq[Option[String]] =
-          rules map { rule => rule(i) }
+          rules.map{ rule => rule(i) }
         val combinedOption: Option[String] =
-          wordOptions reduce addOption
-        combinedOption getOrElse i.toString
+// Using Scalaz
+//          wordOptions.reduce { (x, y) => x |+| y }
+          wordOptions.reduce(addOption)
+        combinedOption.getOrElse(i.toString)
       }
   }
 
-  val parallelCompile: Compiler = {
-    case Config(pairs) =>
-      val rules = pairs.toArray.
+  val parallelCompile: Compiler = { case Config(pairs) =>
+      val rules = pairs.
+        toArray.
         toPar.
         map(buildRule)
 
       { i: Int => rules.
-        map(rule => rule(i)).
+        map { rule => rule(i) }.
         reduce(addOption).
         getOrElse(i.toString)
       }
-  }
-
-  def addOption(a1: Option[String],
-                a2: Option[String])
-      : Option[String] = (a1, a2) match {
-    case (Some(s1), None)     => Some(s1)
-    case (None,     Some(s2)) => Some(s2)
-    case (Some(s1), Some(s2)) => Some(s1 + s2)
-    case (None,     None)     => None
   }
 
   /** Only works for 2. */
@@ -92,16 +86,5 @@ object FizzBuzz {
       { i =>
         ???
       }
-  }
-
-  val badEvaluate: Evaluator = { i =>
-    if (i % 3 == 0)
-      "Fizz"
-    else if (i % 5 == 0)
-      "Buzz"
-    else if (i % 3 == 0 && i % 5 == 0)
-      "FizzBuzz"
-    else
-      i.toString
   }
 }

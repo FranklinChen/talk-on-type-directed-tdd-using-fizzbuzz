@@ -13,9 +13,9 @@ object Main extends App {
     For numbers which are multiples of both three and five,
       print "FizzBuzz".
     */
-  runToSeq(1, 100) foreach println
+  runToSeq(1, 100).foreach(println)
 
   def runToSeq(start: Int, end: Int): Seq[String] = {
-    (start to end) map Defaults.fizzBuzzer
+    start.to(end).map(Defaults.fizzBuzzer)
   }
 }

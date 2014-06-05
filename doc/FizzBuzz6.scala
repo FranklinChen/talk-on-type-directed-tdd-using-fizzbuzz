@@ -1,2 +1,2 @@
-  // old: type Rule = Int => String
+  // was: type Rule = Int => String
   type Rule = Int => Option[String]

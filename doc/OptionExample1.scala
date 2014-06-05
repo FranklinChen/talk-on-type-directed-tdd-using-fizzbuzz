@@ -1,4 +1,4 @@
-val fizzFore     = Some("") // multiple of 3
+val fizzFor3     = Some("") // multiple of 3
 val buzzFor3     = None     // not multiple of 5
 val fizzbuzzFor3 = Some("") // fizzed ""
 

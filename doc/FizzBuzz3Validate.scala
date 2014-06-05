@@ -1,5 +1,4 @@
-  val DIVISOR_MIN = 2
-  val DIVISOR_MAX = 100
+  val DIVISOR_MIN = 2; val DIVISOR_MAX = 100
 
   def validatePair(pair: (Int, String)) = pair match {
     case (d, _) =>

@@ -4,7 +4,7 @@
   type Compiler = Config => Evaluator
 
   val compile: Compiler = {
-    case Config((divisor1, word1), (divisor2, word2)) =>
+    case Config((d1, w1), (d2, w2)) =>
       {  i =>
         ???
       }

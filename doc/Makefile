@@ -1,7 +1,7 @@
 # Use Beamer for slides, Minted for code highlighting.
 # Minted requires Pygments: http://pygments.org/ 
 
-all:	presentation.pdf handout.pdf article.pdf
+all:	presentation.pdf handout.pdf article.pdf feedback.pdf
 
 article.pdf:	slides.tex
 

@@ -19,14 +19,12 @@
 
 \subject{Talks}
 
-% Delete this, if you do not want the table of contents to pop up at
-% the beginning of each subsection:
-%\AtBeginSubsection[]
-%{
-%  \begin{frame}<beamer>{Outline}
-%    \tableofcontents[currentsection,currentsubsection]
-%  \end{frame}
-%}
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>{Outline}
+    \tableofcontents[currentsection,subsectionstyle=hide]
+  \end{frame}
+}
 
 \begin{document}
 
@@ -82,9 +80,9 @@
     \item \alert{test}-driven
     \item \alert{type}-directed
     \end{itemize}
-  \item Show everything concretely:
+  \item Show everything for real:
     \begin{itemize}
-    \item build environment
+    \item project build process
     \item testing frameworks
     \item all the code
     \end{itemize}
@@ -113,7 +111,7 @@
   \end{itemize}
 
   \begin{block}{\href{http://martinfowler.com/articles/is-tdd-dead/}{Is TDD dead?}}
-    My answer: No.
+    Short answer: No.
   \end{block}
 \end{frame}
 
@@ -194,7 +192,7 @@
     \href{http://www.scala-sbt.org/}{SBT}: build tool supporting Scala, Java\dots
   \end{block}
 
-  \begin{block}{Killer features}
+  \begin{block}{Winning features}
     \begin{itemize}
     \item \href{http://www.scala-sbt.org/release/docs/Detailed-Topics/Triggered-Execution.html}{Source file changes trigger smart recompilation!}
     \item Source file changes trigger rerun of the tests that depend on changed code!
@@ -239,29 +237,27 @@
   \inputminted{console}{testQuick2.console}
 \end{frame}
 
-\begin{frame}[fragile]{Outside-in: toward a \mintinline{scala}{FizzBuzz} unit}
+\begin{frame}[fragile]{Outside-in: for a \mintinline{scala}{FizzBuzz} unit}
   Types are shapes to assemble logically.
 
   \inputminted{scala}{Main4.scala}
 
   \begin{itemize}
-  \item \mintinline{scala}{(start to end): Seq[Int]}, where \href{http://www.scala-lang.org/api/2.11.0/index.html\#scala.collection.Seq}{\mintinline{scala}{Seq[_]}} is a \alert{type constructor} that, given a type \mintinline{scala}{A}, returns a type of \mintinline{scala}{Seq[A]}.
-    \pause
+  \item \mintinline{scala}{start.to(end): Seq[Int]}, where \href{http://www.scala-lang.org/api/2.11.0/index.html\#scala.collection.Seq}{\mintinline{scala}{Seq[_]}} is a \alert{type constructor} that, given a type \mintinline{scala}{A}, returns a type of \mintinline{scala}{Seq[A]}.
   \item For any value of type \mintinline{scala}{Seq[A]}, \mintinline{scala}{map: (A => B) => Seq[B]}.
   \begin{center}
     \includegraphics[height=2.5cm]{map.png}
   \end{center}
-  \pause
   \item Therefore: need to implement function \mintinline{scala}{FizzBuzz.evaluate: Int => String}.
   \end{itemize}
 \end{frame}
 
 \subsection{Test-driven units}
 
-\begin{frame}[fragile]{Start writing the \texttt{FizzBuzz} module}
+\begin{frame}[fragile]{Implement new \mintinline{scala}{FizzBuzz} module}
   A failing acceptance test drives \alert{discovery} of
   \begin{itemize}
-  \item A \alert{unit}, \texttt{FizzBuzz}
+  \item A \alert{unit}, \mintinline{scala}{FizzBuzz}
   \item A function with a particular type,
     \mintinline{scala}{Int => String}
   \end{itemize}
@@ -273,7 +269,9 @@
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{First cut at unit tests: example-based}
+\begin{frame}[fragile]{First part of \alert{unit test}: example-based}
+  Manually write some \alert{examples}.
+
   \inputminted{scala}{FizzBuzzSpec1.scala}
 \end{frame}
 
@@ -286,9 +284,9 @@
 
   \inputminted{scala}{FizzBuzzSpec2.scala}
 
-  \begin{block}{Killer features}
+  \begin{block}{Winning features}
     \begin{itemize}
-    \item Auto-generates random tests for each property (100 by default).
+    \item Auto-generates \alert{random} tests for each property (100 by default).
     \item \alert{Type-driven}: here, generates random \mintinline{scala}{Int} values.
     \end{itemize}
   \end{block}
@@ -302,23 +300,32 @@
 
 \subsection{Solving the FizzBuzz problem}
 
-\begin{frame}[fragile]{A wrong and ugly solution}
+\begin{frame}[fragile]{A buggy and ugly solution}
   \inputminted[gobble=2]{scala}{FizzBuzzIf.scala}
 
   \inputminted{console}{testQuick3.console}
 \end{frame}
 
 \begin{frame}{Booleans are evil!}
-  \begin{block}{\href{http://en.wikiquote.org/wiki/Colossal\_Cave\_Adventure}{``maze of twisty little conditionals, all different''}}
+\begin{block}{\href{http://en.wikiquote.org/wiki/Colossal\_Cave\_Adventure}{Maze of twisty little conditionals, all different}}
+  \begin{center}
+    \includegraphics[height=3cm]{dmaze.png}
+  \end{center}
+
+  \begin{itemize}
+  \item Too easy to write incorrect sequences of nested, combined conditionals.
+  \item Overuse of Booleans is a type \alert{smell}
+  \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}<article|handout>{Why booleans are evil}
+  \begin{block}{No help from type system}
     \begin{itemize}
-      \mode<article|handout>{
     \item Conditions can be arbitrary: depend on \alert{any} combination of data.
-    \item A computation leading to a Boolean value by essence \href{http://existentialtype.wordpress.com/2011/03/15/boolean-blindness/}{loses information about the original data}.
     \item Multiple conditions: combinatorial explosion (two conditions led to four cases).
     \item Possibly overlapping conditions: order dependency subtleties.
     \item Possibly duplicated checking of the some condition.
-    }
-    \item \textbf{No help from type system: easy to write incorrect sequences of nested, combined conditionals}.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -326,7 +333,7 @@
 \begin{frame}[fragile]{Pattern matching organizes information}
   \inputminted[gobble=2]{scala}{FizzBuzz2.scala}
 
-  \begin{block}{Killer features}
+  \begin{block}{Winning features}
     \begin{itemize}
     \item Visual \alert{beauty} and clarity.
     \item No duplicated conditionals.
@@ -342,20 +349,22 @@
   \inputminted{console}{testQuick4.console}
 \end{frame}
 
-\begin{frame}[fragile]{Digression: Swift has pattern matching too}
+\begin{frame}[fragile]{Swift digression: pattern matching}
+  The same solution, in Swift:
+
   \inputminted{ocaml}{FizzBuzz2.swift}
 \end{frame}
 
-\begin{frame}[fragile]{Acceptance test passed, finally}
+\begin{frame}[fragile]{Acceptance test passes}
 
   \inputminted{console}{testQuick5.console}
 
-  \begin{block}{Are we done?}
+  \begin{block}{Done?}
     No. Client wants more features.
   \end{block}
 \end{frame}
 
-\section{FizzBuzz 2: allow configuration}
+\section{FizzBuzz 2: user configuration}
 
 \subsection{Adding new features}
 
@@ -378,7 +387,7 @@
 \subsection{Type-driven refactoring}
 
 \begin{frame}{Type-driven refactoring}
-  \begin{block}{Types make refactoring much more fun!}
+  \begin{block}{Types mean: refactoring is much more fun!}
   \begin{itemize}
   \item Add \alert{new} tests.
   \item Change types and code: to make new tests \alert{type check}.
@@ -390,7 +399,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{More features means more types}
-  Change \mintinline{scala}{Main.runToSeq} driver:
+  Change \mintinline{scala}{FizzBuzz.evaluate} to \mintinline{scala}{Defaults.fizzBuzzer}:
   \inputminted[gobble=2]{scala}{Main5.scala}
 
   Add new types to \mintinline{scala}{FizzBuzz} module:
@@ -419,31 +428,32 @@
 
   We need to:
   \begin{itemize}
-  \item Incorporate runtime \alert{validation} when constructing \mintinline{scala}{Config}.
-  \item Correct our \mintinline{scala}{Config} random generator.
+  \item Add runtime \alert{validation} when \alert{constructing} \mintinline{scala}{Config}.
+  \item Refine \mintinline{scala}{Config} random generator.
   \end{itemize}
 \end{frame}
 
 \subsection{Validation}
 
 \begin{frame}[fragile]{Add (runtime) validation}
-  (Quick and dirty) \alert{runtime} precondition checking using Scala standard library throwing an \alert{exception} (\href{http://blog.jessitron.com/2013/06/whats-dirtier-than-comments-exceptions.html}{yuck}).
+  \alert{Runtime} precondition contract: Scala's \mintinline{scala}{require} (throws exception on failure):
 
   \inputminted[gobble=2]{scala}{FizzBuzz3Validate.scala}
 \end{frame}
 
-\begin{frame}[fragile]{Data validation is no joke!}
-  \begin{itemize}
-  \item In real life, prefer non-exception type-based solution such as \href{http://eed3si9n.com/learning-scalaz/Validation.html}{Scalaz validation}.
-  \item Also: there are languages with more powerful type systems (\href{http://en.wikipedia.org/wiki/Dependent_type}{dependent type systems}), such as \href{http://www.idris-lang.org/}{Idris}, that enable defining and checking more precise types (such as ``integer within 2 and 100'').
+\begin{frame}<article|handout>[fragile]{Data validation can be critical!}
+    In real life, prefer non-exception type-based solution such as \href{http://eed3si9n.com/learning-scalaz/Validation.html}{Scalaz validation}.
+
+  \begin{block}{Digression: two ways to prevent \href{http://heartbleed.com/}{Heartbleed}}
     \begin{itemize}
-    \item \href{http://heartbleed.com/}{Heartbleed} could have been \href{http://bluishcoder.co.nz/2014/04/11/preventing-heartbleed-bugs-with-safe-languages.html}{prevented by coding in the systems language ATS}.
+    \item Instead of C: use a \href{http://en.wikipedia.org/wiki/Dependent_type}{dependently typed} safe systems language such as \href{http://www.ats-lang.org/}{ATS} for \href{http://bluishcoder.co.nz/2014/04/11/preventing-heartbleed-bugs-with-safe-languages.html}{compile-time TDD}.
+    \item Even with C: use \href{http://martinfowler.com/articles/testing-culture.html}{good validation and testing practices}.
+      \begin{itemize}
+      \item A weaker type system is not an \alert{excuse} to skip
+        write tedious validation code or tests!
+      \end{itemize}
     \end{itemize}
-  \item Do not use a weaker type system as an \alert{excuse} not to write tedious validation code or tests!
-    \begin{itemize}
-    \item Heartbleed could also have been prevented using \href{http://martinfowler.com/articles/testing-culture.html}{good validation and testing practices}.
-    \end{itemize}
-  \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Improve \mintinline{scala}{Config} random generator}
@@ -451,35 +461,33 @@
 \end{frame}
 
 \begin{frame}[fragile]{New test runs further, stills fails}
-  \begin{itemize}
-  \item But refactor old code to \mintinline{scala}{FizzBuzz.compile}.
-  \item All old tests pass; new test passes also.
-  \end{itemize}
+  Refactor old code to \mintinline{scala}{FizzBuzz.compile}, to pass old tests and new test.
 
   \inputminted{scala}{FizzBuzz3Compile.scala}
 \end{frame}
 
-\section{FizzBuzz 3: \texttt{FizzBuzzPop}}
+\section{FizzBuzz 3: \texttt{FizzBuzzPop} and beyond}
 
-\subsection{Generalizing to more than two divisors}
+\subsection{Generalize to more than two divisors}
 
 \begin{frame}[fragile]{Generalizing to more than two divisors}
   \begin{block}{Client wants \texttt{FizzBuzzPop}!}
   \begin{itemize}
   \item Given three divisors (such as 3, 5, 7).
-  \item Given three corresponding words (such as \mintinline{scala}{"Fizz"}, \mintinline{scala}{"Buzz"}, \mintinline{scala}{"Pop"}).
+  \item Given three words (such as \mintinline{scala}{"Fizz"}, \mintinline{scala}{"Buzz"}, \mintinline{scala}{"Pop"}).
+    \mode<article|handout>{
   \item Compile to evaluator that given an integer prints:
     \begin{itemize}
     \item either a string combining a subset of the three words, or
     \item a numerical string if the integer is not a multiple of any of the three divisors
     \end{itemize}
+    }
   \item Example: \mintinline{scala}{21} should output \mintinline{scala}{"FizzPop"}.
   \end{itemize}
   \end{block}
 \end{frame}
 
-\mode<article|handout>{
-\begin{frame}{Thought-driven development}
+\begin{frame}<article|handout>{Thought-driven development}
     Software development is not primarily about \alert{coding}, but \alert{thinking}.
 
   \begin{itemize}
@@ -493,23 +501,22 @@
     \end{description}
   \end{itemize}
 \end{frame}
-}
 
 \subsection{More features means more tests and types (again)}
 
 \begin{frame}[fragile]{More features means more tests}
-  Write new tests for a proposed \mintinline{scala}{Defaults.fizzBuzzPopper}:
+  Write new tests for new \mintinline{scala}{Defaults.fizzBuzzPopper}:
 
   \inputminted[gobble=2]{scala}{FizzBuzzSpec5.scala}
 
-  Add \mintinline{scala}{Defaults.fizzBuzzPopper}:
+  Change configuration: to \mintinline{scala}{Seq} of pairs, instead of just two:
   \inputminted[gobble=2]{scala}{Defaults2.scala}
 \end{frame}
 
 \begin{frame}[fragile]{More tests means more (or changed) types}
   \inputminted{console}{testQuick8.console}
 
-  Change \alert{type} \mintinline{scala}{Config} to allow a sequence of pairs rather than just two:
+  Change \alert{type} \mintinline{scala}{Config} to allow a sequence of pairs:
 
   \inputminted[gobble=2]{scala}{FizzBuzz3Seq.scala}
 
@@ -519,41 +526,41 @@
 \end{frame}
 
 \begin{frame}[fragile]{Fix remaining type errors}
-  Revealed: unimplemented case of more than two divisors.
+  Refactoring reveals need to implement case of more than two divisors.
 
   \inputminted[gobble=2]{scala}{FizzBuzz3SeqCompile.scala}
 \end{frame}
 
-\mode<article|handout>{
-\begin{frame}{General observations}
+\begin{frame}<article|handout>{General observations}
   \begin{itemize}
   \item Return a sum of a subset of the configured words, if there is any divisor match.
   \item If there is \alert{no} divisor match, return the numerical string.
   \end{itemize}
 \end{frame}
-}
 
 \begin{frame}[fragile]{More computation means more types}
-  \begin{itemize}
-  \item Each potential divisor (such as 3, 5, or 7 in \texttt{FizzBuzzPop}) should be compiled to a rule of type \mintinline{scala}{Int => String}.
-  \end{itemize}
+  Compile each divisor to a ``rule'' that awaits input.
 
   \inputminted[gobble=2]{scala}{FizzBuzz4.scala}
+
+  \begin{block}{\texttt{FizzBuzz} demo time!}
+    \begin{itemize}
+    \item Two volunteers: to play role of \mintinline{scala}{Rule}.
+    \item One volunteer: to combine sub-results.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \subsection{Demo}
 
-\begin{frame}{Demo time}
+\begin{frame}<article|handout>{Demo explanation}
   \begin{itemize}
   \item Given a sequence of rules and an integer: apply all the rules to the integer, then combine the partial results.
   \end{itemize}
 
-  \begin{block}{Volunteers, step up for \texttt{FizzBuzzPop}!}
-    Each person will play the role of a \mintinline{scala}{Rule}.
-  \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Assemble the types again}
+\begin{frame}[label=first-general,fragile]{Assemble the types}
   \inputminted[gobble=2]{scala}{FizzBuzz5.scala}
 \end{frame}
 
@@ -569,27 +576,39 @@
 \begin{frame}[fragile]{Test failure: coarse types again}
   \inputminted[gobble=2]{console}{testQuick9.console}
 
-  \begin{block}{Property-based testing revealed the \alert{unexpected}}
-  \begin{itemize}
-  \item Unexpected ambiguity:
+  \begin{block}{Demo time!}
     \begin{itemize}
-    \item Intended behavior: output a number only if it has none of the divisors.
-    \item Actual behavior: 1649349 is divisible by 13 but not 91, yet 1649349 was output.
+    \item Configuration: \mintinline{scala}{Seq(3 -> "", 5 -> "Buzz")}
+    \item Input: \mintinline{scala}{2}
+    \item Output: should be \mintinline{scala}{""}
+    \item Output was: \mintinline{scala}{"2"}
     \end{itemize}
-  \item Corner case: empty ``fizz'' and ``buzz'' words.
-  \end{itemize}
+  \end{block}
+\end{frame}
+
+\againframe<beamer>{first-general}
+
+\begin{frame}[fragile]{Property-based testing rescued us again!}
+  \begin{block}{Be honest: would you have caught this bug manually?}
+    \begin{itemize}
+    \item I didn't.
+    \item I never wrote \texttt{FizzBuzzPop} examples testing empty strings.
+    \item Property-based testing reveals \alert{unexpected} corner cases.
+      \begin{itemize}
+      \item (Empty ``fizz'' and ``buzz'' word strings).
+      \end{itemize}
+    \end{itemize}
   \end{block}
 \end{frame}
 
 \subsection{\mintinline{scala}{Option[A]} type}
 
 \begin{frame}{An empty string is \alert{not} equivalent to no string}
-  Presence of something ``empty'' is \alert{not} equivalent to the absence of something (contrary to how some programming languages work).
-
-  \begin{itemize}
-  \item Problem: special case condition, testing for an empty string, conflated an empty combined string with ``failed to be a multiple at all''.
-  \item Solution: refine another \alert{type}!
-  \end{itemize}
+  \begin{block}{Presence of something ``empty'' is \alert{not} equivalent to no thing.}
+    Sending someone an empty email versus not sending any email.
+  \end{block}
+  
+  Many programming languages get this wrong.
 \end{frame}
 
 \begin{frame}[fragile]{\mintinline{scala}{Option[A]} type}
@@ -602,36 +621,100 @@
 
   For example, \mintinline{scala}{Some("")} is not the same as \mintinline{scala}{None}.
 
-  \begin{block}{Another Swift digression}
-    Swift also has the option type, with special syntax.
-  \end{block}
-
-%  \inputminted{scala}{OptionExample1.scala}
+  \inputminted{scala}{OptionExample1.scala}
 \end{frame}
 
 \begin{frame}[fragile]{Cleaning up the types}
-  Change type \mintinline{scala}{Rule}:
   \inputminted[gobble=2]{scala}{FizzBuzz6.scala}
 
-  Immediately get type errors:
+  Useful type errors:
 
   \inputminted[gobble=2]{console}{testQuick10.console}
 \end{frame}
 
-\begin{frame}[fragile]{Fix the type errors}
+\begin{frame}[fragile]{Fix the type errors: our rule builder}
+  \inputminted[gobble=2]{scala}{FizzBuzz7Rule.scala}
 
-  \inputminted[gobble=2]{scala}{FizzBuzz7.scala}
+  \begin{block}{Demo time!}
+    \begin{itemize}
+    \item (Instructions: circle what you write to wrap it with \mintinline{scala}{Some})
+    \item Configuration: \mintinline{scala}{Seq(3 -> "", 5 -> "Buzz")}
+    \item Input: \mintinline{scala}{2}
+    \item Output: should be \mintinline{scala}{""}
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Monoids}
-  We define ``addition'' for \mintinline{scala}{Option[String]}:
-  \inputminted[gobble=2]{scala}{FizzBuzz8.scala}
-  
-  \begin{block}{\mintinline{scala}{Option[String]} is a \href{http://en.wikipedia.org/wiki/Monoid}{Monoid}}
+\begin{frame}[fragile]{Fix the type errors: our compiler}
+  \inputminted[gobble=2]{scala}{FizzBuzz7.scala}
+
   \begin{itemize}
-  \item There is an identity element (\mintinline{scala}{None}).
-  \item There is a binary associative operator (\mintinline{scala}{addOption}).
+  \item We need to write: \mintinline{scala}{addOption}
+  \item Scala standard library provides: \mintinline{scala}{getOrElse}
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{``Addition'' for \mintinline{scala}{Option[String]}}
+  \inputminted[gobble=2]{scala}{FizzBuzz8.scala}
+\end{frame}
+
+\begin{frame}[fragile]{Getting \mintinline{scala}{A} back out of \mintinline{scala}{Option[A]}}
+  \begin{block}{Do not lose information!}
+    \mintinline{scala}{getOrElse} inspects the \mintinline{Option[A]} value and either
+    \begin{itemize}
+    \item returns the value \mintinline{scala}{v} inside a \mintinline{scala}{Some(v)},
+    \item or else returns the specific default value.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}<article|handout>[fragile]{Swift has two option types}
+  Swift calls them ``optionals''.
+
+  \begin{block}{Normal optional type}
+    \begin{itemize}
+    \item \mintinline{ocaml}{A?} is a type for each type \mintinline{scala}{A}.
+    \item Must unwrap explicitly.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Implicit unwrapped optional type}
+    \begin{itemize}
+    \item \mintinline{ocaml}{A!} is a type for each type \mintinline{scala}{A}.
+    \item Unfortunate type hole:
+      \begin{quote}
+        If you try to access an implicitly unwrapped optional when it
+        does not contain a value, you will trigger a runtime error.
+      \end{quote}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Transform information; don't destroy it}
+
+\begin{frame}[fragile]{Transform information; don't destroy it}
+  Did you notice? Our new code no longer uses \mintinline{scala}{if}.
+
+  \begin{block}{Bug cause: destroying information, using \mintinline{scala}{if}} 
+    \begin{itemize}
+    \item Building a rule: \mintinline{scala}{if (i % n == 0) word else ""}
+    \item Obtaining a final string answer: \mintinline{scala}{if (combined == "") i.toString else combined}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Transforming information}
+    \begin{itemize}
+    \item To \mintinline{scala}{Option[String]}: \mintinline{scala}{(i % n == 0).option(word)}
+    \item To \mintinline{scala}{String}: \mintinline{scala}{combinedOption.getOrElse(i.toString)}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Type-directed design tip}
+    We could have saved trouble \alert{up front}, by using precise \alert{types}.
+    \begin{itemize}
+    \item Avoid \mintinline{scala}{if}, when possible.
+    \item Avoid \mintinline{scala}{String} (but required at I/O boundaries of program).
+    \end{itemize}
   \end{block}
 \end{frame}
 
@@ -640,15 +723,45 @@
 \begin{frame}[fragile]{Parallelism}
   \begin{itemize}
   \item Use of \alert{map}: parallelizable; there are high-performance \href{http://scala-blitz.github.io/}{parallel collections} for Scala.
-  \item Use of \alert{reduce}: parallelizable because of the monoid property.
+  \item Use of \alert{reduce}: parallelizable because of the monoid property:
+  \begin{block}{\mintinline{scala}{Option[String]} is a \href{http://en.wikipedia.org/wiki/Monoid}{Monoid}}
+  \begin{itemize}
+  \item There is an identity element (\mintinline{scala}{None}).
+  \item There is a binary associative operator (\mintinline{scala}{addOption}).
   \end{itemize}
+  \end{block}
 
-  We discovered a theoretical speedup for generalized \texttt{FizzBuzz} from $O(n)$ to $O(\log n)$ (omitting some technical subtleties).
+  \begin{block}{Demo time!}
+    \begin{itemize}
+    \item Configuration: \mintinline{scala}{Seq(3 -> "Fizz", 5 -> "Buzz", 7 -> "Pop", 2 -> "Boom")}
+    \item Input: \mintinline{scala}{42}
+    \item Output: \mintinline{scala}{"FizzPopBoom"}
+    \end{itemize}
+  \end{block}
+  \end{itemize}
 
 \end{frame}
 
-\begin{frame}[fragile]{Parallelism (code)}
+\begin{frame}[fragile]{Final parallelized code}
   \inputminted[gobble=2]{scala}{FizzBuzz9.scala}
+
+  \begin{block}{Coding style tip}
+    This level of conciseness is not always best: maybe too ``clever''?
+  \end{block}
+\end{frame}
+
+\begin{frame}{Parallelism summary}
+  We discovered a theoretical speedup for generalized \texttt{FizzBuzz}:
+  \begin{itemize}
+  \item Sequential: $O(n)$
+  \item Parallel: $O(\log n)$ (given $\log n$ processors, and omitting some technical subtleties)
+  \end{itemize}
+
+  Also, driver outer loop can be sped up:
+  \begin{itemize}
+  \item Sequential loop on 1 to $m$: $O(m)$
+  \item Parallel loop: $O(1)$ (given $m$ processors)
+  \end{itemize}
 \end{frame}
 
 \section{Conclusion}
@@ -657,18 +770,44 @@
   \begin{itemize}
   \item \alert{Tests} are useful.
   \item \alert{Types} are useful.
-  \item Tests and types work well together to drive design and program evolution!
+  \item Tests and types work well together, to drive design and program evolution.
   \item Modern typed languages such as Scala promote fun, correct programming!
-  \item It's a great time to be learning and using a modern typed language: Apple had good reasons to invent Swift.
+  \item It's a great time to be learning and using a modern typed language: there is excitement over Apple's Swift.
   \end{itemize}
 
-  \begin{block}{GitHub}
-    All materials for this talk are available at \url{https://github.com/franklinchen/talk-on-type-directed-tdd-using-fizzbuzz}. The hyperlinks on the slide PDFs are clickable.
+  \begin{block}{Code, slides, article}
+    \begin{itemize}
+    \item Go to  \url{https://github.com/franklinchen/talk-on-type-directed-tdd-using-fizzbuzz}
+    \item The article has more detail omitted in the presentation slides.
+    \item The hyperlinks in all provided PDFs are clickable.
+    \end{itemize}
   \end{block}
 \end{frame}
 
-%\appendix
+\appendix
 
+\section*{\appendixname}
+
+\begin{frame}{Some free online courses on modern typed functional programming}
+  \begin{itemize}
+  \item Using Scala: \href{http://www.coursera.org/course/progfun}{Functional Programming Principles in Scala} on Coursera, taught by Martin Odersky (inventor of Scala)
+  \item Using Haskell: \href{http://www.edx.org/course/delftx/delftx-fp101x-introduction-functional-2126}{Introduction to Functional Programming} on EdX, taught by Erik Meijer (Haskell hero)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Some articles}
+  \begin{itemize}
+  \item \href{http://existentialtype.wordpress.com/2011/03/15/boolean-blindness/}{The problem with Booleans and conditionals}
+  \item
+\href{http://blog.jessitron.com/2013/06/whats-dirtier-than-comments-exceptions.html}{The problem with exceptions}
+  \item
+\href{http://eed3si9n.com/learning-scalaz/Validation.html}{Principled validation using types}
+  \item \href{http://bluishcoder.co.nz/2014/04/11/preventing-heartbleed-bugs-with-safe-languages.html}{Preventing Heartbleed by using a dependently typed language}
+  \item \href{http://www.michael-noll.com/blog/2013/12/02/twitter-algebird-monoid-monad-for-large-scala-data-analytics/}{Twitter's use of monoids}
+  \item
+\href{https://github.com/densh/talks/blob/master/swift-vs-scala-211-2014-06-03/Swift\%20vs\%20Scala\%202.11.pdf}{Side-by-side comparison of basic Scala and Swift constructs}
+  \end{itemize}
+\end{frame}
 
 \end{document}
 
