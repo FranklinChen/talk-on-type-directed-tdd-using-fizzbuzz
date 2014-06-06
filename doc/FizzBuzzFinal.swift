@@ -4,7 +4,7 @@ typealias Compiler = Config -> Evaluator
 typealias Rule = Int -> String?
     
 let buildRule: ((Int, String)) -> Rule = { n, word in
-  { i in (i % n == 0) ? word : nil } }
+  { i in return (i % n == 0) ? word : nil } }
 }
 
 let compile: Compiler = { pairs in
