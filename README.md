@@ -1,8 +1,10 @@
-## Talk: "Type-directed TDD with FizzBuzz"
+## Talk: "Exploring type-directed test-driven development: a case study using FizzBuzz"
 
 [![Build Status](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz.png)](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz)
 
-Presentation for Pittsburgh TechFest 2014, June 7, 2014.
+(Note: Travis seems to be having problems with timeouts or something downloading Scala library dependencies. This project builds fine, if you do it locally.)
+
+Presentation for [Pittsburgh TechFest](http://pghtechfest.com/) 2014, Saturday June 7, 2014.
 
 ### Abstract
 
@@ -16,14 +18,16 @@ The Scala language will be used the vehicle for this demonstration, but the tech
 
 I strongly recommend reading the [*article*](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/master/doc/article.pdf).
 
-But if you want the slides for *presentation*, the latest version of the slides is available [here](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/master/doc/presentation.pdf).
+But if you want the slides for the actual *presentation*, the latest version of the slides is available [here](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/master/doc/presentation.pdf).
 
-### Code
+### Code in Scala
 
-The code goes a bit beyond what was covered in the presentation.
+The code goes a bit beyond what was covered in the presentation. There is additional refactoring and abstraction, and the use of *traits* to automatically test different implementations that have the same interface.
+
+The presentation deliberately stayed focused on the *core* FizzBuzz problem rather than go into the  questions of modular organization in the large, which differ more depending on the language. For example, we would probably use signatures/structures/functors in OCaml, and type classes in Haskell.
 
 ### Old stuff
 
-A rough practice version of the presentation was given at the Pittsburgh Scala Meetup earlier. I don't recommend even looking at them.
+A rough practice version of the presentation was given at the [Pittsburgh Scala Meetup][http://www.meetup.com/Pittsburgh-Scala-Meetup] earlier, [on May 15, 2014](http://www.meetup.com/Pittsburgh-Scala-Meetup/events/174013492/). I don't recommend even looking at them, because much has been improved.
 
-But the slides are [here](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/meetup/doc/presentation.pdf)
+But the slides are [here](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/meetup/doc/presentation.pdf) in case you want to see what changed.
