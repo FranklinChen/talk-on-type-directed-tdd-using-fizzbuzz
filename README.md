@@ -6,6 +6,8 @@
 
 Presentation for [Pittsburgh TechFest](http://pghtechfest.com/) 2014, Saturday June 7, 2014.
 
+This repository contains Scala code. The Swift code is [here](https://github.com/franklinchen/fizzbuzz-swift).
+
 ### Abstract
 
 (Note: this presentation will use live human volunteers to play the roles of various programming concepts.)

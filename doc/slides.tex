@@ -80,7 +80,7 @@
     \item \alert{test}-driven
     \item \alert{type}-directed
     \end{itemize}
-  \item Show everything for real:
+  \item Show everything for real (using Scala):
     \begin{itemize}
     \item project build process
     \item testing frameworks
@@ -92,10 +92,11 @@
     \item modifications: easy to understand
     \item fun!
     \end{itemize}
-  \item Encourage you to explore further
+  \item Encourage you to explore a modern typed language
     \begin{itemize}
-    \item Have you heard the news about \href{https://developer.apple.com/swift/}{Swift}?
+    \item This Monday, Apple ditched Objective C for its new language \href{https://developer.apple.com/swift/}{Swift}!
       \includegraphics[height=0.75cm]{swift-hero.png}
+    \item Complete Swift code will shown at the end; \href{https://github.com/densh/talks/blob/master/swift-vs-scala-211-2014-06-03/Swift\%20vs\%20Scala\%202.11.pdf}{looks a lot like Scala}.
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -119,17 +120,28 @@
 
 \begin{frame}{Type systems}
   \begin{block}{What is a type system?}
-    For this presentation: a \alert{syntactic} method for \alert{proving} the absence of certain program behaviors.
+    A \alert{syntactic} method to \alert{prove} that bad things can't happen.
   \end{block}
 
   \begin{block}{``Debating'' types ``versus'' tests?}
-    Let's just use both!
+    \begin{itemize}
+    \item Let's use both types and tests!
+    \item But: use a \alert{good} type system, not a bad one.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Some decent practical typed languages}
+    \begin{itemize}
+    \item \href{http://ocaml.org/}{OCaml}: 20 years old
+    \item \href{http://www.haskell.org/}{Haskell}: 20 years old
+    \item \href{http://www.scala-lang.org/}{Scala}: 10 years old
+    \item \href{http://developer.apple.com/swift/}{Swift}: 5 days old
+    \item \href{http://www.rust-lang.org/}{Rust} (still in progress)
+    \end{itemize}
   \end{block}
 \end{frame}
 
-\subsection{Poor versus decent type systems}
-
-\begin{frame}{Poor versus decent type systems}
+\begin{frame}<article|handout>{Poor versus decent type systems}
   \begin{block}{Poor type systems}
     \begin{itemize}
       \mode<article|handout>{
@@ -148,8 +160,8 @@
     \item ML (\href{http://www.smlnj.org/}{Standard ML}, \href{http://ocaml.org/}{OCaml}, \href{http://fsharp.org/}{F\#}): I first used for work in 1995
     \item \href{http://www.haskell.org/}{Haskell}: I first used for work in 1995
     \item \href{http://www.scala-lang.org/}{Scala}: first released in 2004
-    \item \href{http://www.rust-lang.org/}{Rust}: not yet version 1.0
     \item \href{http://developer.apple.com/swift/}{Swift}: announced by Apple on June 2, 2014!
+    \item \href{http://www.rust-lang.org/}{Rust}: not yet version 1.0
     \end{itemize}
   \end{block}
 \end{frame}
@@ -170,9 +182,9 @@
   \end{block}
 \end{frame}
 
-\subsection{Starter Scala code: main driver}
+\subsection{Starter code: main driver}
 
-\begin{frame}[fragile]{Starter Scala code: main driver}
+\begin{frame}[fragile]{Starter code: main driver}
   \begin{block}{\includegraphics[height=0.75cm]{scala-logo-red-dark.png}}
     Scala: a modern \alert{object-oriented} and \alert{functional} language.
   \end{block}
@@ -231,6 +243,10 @@
   }
 \end{frame}
 
+\begin{frame}<article|handout>[fragile]{TDD in Swift}
+  \inputminted{ocaml}{MainSpec1.swift}
+\end{frame}
+
 \begin{frame}[fragile]{Test passes type check, but fails}
   Incremental compilation/testing kicks in:
 
@@ -240,7 +256,7 @@
 \begin{frame}[fragile]{Outside-in: for a \mintinline{scala}{FizzBuzz} unit}
   Types are shapes to assemble logically.
 
-  \inputminted{scala}{Main4.scala}
+  \inputminted[gobble=2]{scala}{Main4.scala}
 
   \begin{itemize}
   \item \mintinline{scala}{start.to(end): Seq[Int]}, where \href{http://www.scala-lang.org/api/2.11.0/index.html\#scala.collection.Seq}{\mintinline{scala}{Seq[_]}} is a \alert{type constructor} that, given a type \mintinline{scala}{A}, returns a type of \mintinline{scala}{Seq[A]}.
@@ -250,6 +266,10 @@
   \end{center}
   \item Therefore: need to implement function \mintinline{scala}{FizzBuzz.evaluate: Int => String}.
   \end{itemize}
+\end{frame}
+
+\begin{frame}<article|handout>[fragile]{Swift version of driver}
+  \inputminted{ocaml}{Main4.swift}
 \end{frame}
 
 \subsection{Test-driven units}
@@ -292,6 +312,10 @@
   \end{block}
 \end{frame}
 
+\begin{frame}<article|handout>{Property-based testing for Swift?}
+  I hope someone writes a property-based testing framework for Swift!
+\end{frame}
+
 \begin{frame}[fragile]{Property-based tests (continued)}
   The other three properties of interest:
 
@@ -314,7 +338,7 @@
 
   \begin{itemize}
   \item Too easy to write incorrect sequences of nested, combined conditionals.
-  \item Overuse of Booleans is a type \alert{smell}
+  \item \href{http://existentialtype.wordpress.com/2011/03/15/boolean-blindness/}{Overuse of Booleans} is a type \alert{smell}.
   \end{itemize}
   \end{block}
 \end{frame}
@@ -349,7 +373,7 @@
   \inputminted{console}{testQuick4.console}
 \end{frame}
 
-\begin{frame}[fragile]{Swift digression: pattern matching}
+\begin{frame}<article|handout>[fragile]{Swift digression: pattern matching}
   The same solution, in Swift:
 
   \inputminted{ocaml}{FizzBuzz2.swift}
@@ -441,9 +465,15 @@
   \inputminted[gobble=2]{scala}{FizzBuzz3Validate.scala}
 \end{frame}
 
-\begin{frame}<article|handout>[fragile]{Data validation can be critical!}
-    In real life, prefer non-exception type-based solution such as \href{http://eed3si9n.com/learning-scalaz/Validation.html}{Scalaz validation}.
+\begin{frame}{A note on exceptions and types}
+  \begin{itemize}
+  \item \href{http://blog.jessitron.com/2013/06/whats-dirtier-than-comments-exceptions.html}{Exceptions are evil} because they escape the type system.
+  \item In real life, I prefer to use a principled \alert{type-based} validation system, such as \href{http://eed3si9n.com/learning-scalaz/Validation.html}{Scalaz}.
+  \item Note: Swift does not have exceptions, so expect some type-based libraries to emerge!
+  \end{itemize}
+\end{frame}
 
+\begin{frame}<article|handout>[fragile]{Data validation can be critical!}
   \begin{block}{Digression: two ways to prevent \href{http://heartbleed.com/}{Heartbleed}}
     \begin{itemize}
     \item Instead of C: use a \href{http://en.wikipedia.org/wiki/Dependent_type}{dependently typed} safe systems language such as \href{http://www.ats-lang.org/}{ATS} for \href{http://bluishcoder.co.nz/2014/04/11/preventing-heartbleed-bugs-with-safe-languages.html}{compile-time TDD}.
@@ -690,6 +720,10 @@
   \end{block}
 \end{frame}
 
+\begin{frame}<article|handout>[fragile]{The same thing, in Swift}
+  \inputminted{ocaml}{FizzBuzz8.swift}
+\end{frame}
+
 \subsection{Transform information; don't destroy it}
 
 \begin{frame}[fragile]{Transform information; don't destroy it}
@@ -718,6 +752,11 @@
   \end{block}
 \end{frame}
 
+\begin{frame}[fragile]{Bonus: the final code in Swift}
+  \inputminted{ocaml}{FizzBuzzFinal.swift}
+\end{frame}
+
+
 \section{Parallel \texttt{FizzBuzz}}
 
 \begin{frame}[fragile]{Parallelism}
@@ -728,6 +767,7 @@
   \begin{itemize}
   \item There is an identity element (\mintinline{scala}{None}).
   \item There is a binary associative operator (\mintinline{scala}{addOption}).
+  \item \href{http://www.michael-noll.com/blog/2013/12/02/twitter-algebird-monoid-monad-for-large-scala-data-analytics/}{Fantastically important in practice!}
   \end{itemize}
   \end{block}
 
@@ -750,6 +790,10 @@
   \end{block}
 \end{frame}
 
+\begin{frame}<article|handout>{Parallelism for Swift?}
+  I expect people to develop libraries for parallelism in Swift.
+\end{frame}
+
 \begin{frame}{Parallelism summary}
   We discovered a theoretical speedup for generalized \texttt{FizzBuzz}:
   \begin{itemize}
@@ -764,22 +808,30 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Future work}
+  \begin{itemize}
+  \item Speedup a lie: string concatenation as presented will be $O(n^2)$; should use a ``rope'' implementation if appending strings.
+  \item In real life: want asynchronous, real-time, interactive app; none of that is touched here, but types help tremendously there too.
+  \end{itemize}
+\end{frame}
+
 \section{Conclusion}
 
 \begin{frame}{Conclusion}
   \begin{itemize}
-  \item \alert{Tests} are useful.
-  \item \alert{Types} are useful.
-  \item Tests and types work well together, to drive design and program evolution.
+  \item \alert{Tests} are great.
+  \item \alert{Types} are great.
+  \item Tests and types work hand in hand, driving design and program evolution.
   \item Modern typed languages such as Scala promote fun, correct programming!
-  \item It's a great time to be learning and using a modern typed language: there is excitement over Apple's Swift.
+  \item It's a great time to be learning and using a modern typed language: Apple ditched Objective C for Swift.
   \end{itemize}
 
   \begin{block}{Code, slides, article}
     \begin{itemize}
     \item Go to  \url{https://github.com/franklinchen/talk-on-type-directed-tdd-using-fizzbuzz}
-    \item The article has more detail omitted in the presentation slides.
+    \item The \href{https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/master/doc/article.pdf}{article} has more detail omitted in the presentation.
     \item The hyperlinks in all provided PDFs are clickable.
+    \item The Swift code: \url{https://github.com/franklinchen/fizzbuzz-swift}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -792,20 +844,6 @@
   \begin{itemize}
   \item Using Scala: \href{http://www.coursera.org/course/progfun}{Functional Programming Principles in Scala} on Coursera, taught by Martin Odersky (inventor of Scala)
   \item Using Haskell: \href{http://www.edx.org/course/delftx/delftx-fp101x-introduction-functional-2126}{Introduction to Functional Programming} on EdX, taught by Erik Meijer (Haskell hero)
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Some articles}
-  \begin{itemize}
-  \item \href{http://existentialtype.wordpress.com/2011/03/15/boolean-blindness/}{The problem with Booleans and conditionals}
-  \item
-\href{http://blog.jessitron.com/2013/06/whats-dirtier-than-comments-exceptions.html}{The problem with exceptions}
-  \item
-\href{http://eed3si9n.com/learning-scalaz/Validation.html}{Principled validation using types}
-  \item \href{http://bluishcoder.co.nz/2014/04/11/preventing-heartbleed-bugs-with-safe-languages.html}{Preventing Heartbleed by using a dependently typed language}
-  \item \href{http://www.michael-noll.com/blog/2013/12/02/twitter-algebird-monoid-monad-for-large-scala-data-analytics/}{Twitter's use of monoids}
-  \item
-\href{https://github.com/densh/talks/blob/master/swift-vs-scala-211-2014-06-03/Swift\%20vs\%20Scala\%202.11.pdf}{Side-by-side comparison of basic Scala and Swift constructs}
   \end{itemize}
 \end{frame}
 
