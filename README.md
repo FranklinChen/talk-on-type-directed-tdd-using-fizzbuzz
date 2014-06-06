@@ -28,6 +28,6 @@ The presentation deliberately stayed focused on the *core* FizzBuzz problem rath
 
 ### Old stuff
 
-A rough practice version of the presentation was given at the [Pittsburgh Scala Meetup][http://www.meetup.com/Pittsburgh-Scala-Meetup] earlier, [on May 15, 2014](http://www.meetup.com/Pittsburgh-Scala-Meetup/events/174013492/). I don't recommend even looking at them, because much has been improved.
+A rough practice version of the presentation was given at the [Pittsburgh Scala Meetup](http://www.meetup.com/Pittsburgh-Scala-Meetup) earlier, [on May 15, 2014](http://www.meetup.com/Pittsburgh-Scala-Meetup/events/174013492/). I don't recommend even looking at them, because much has been improved.
 
 But the slides are [here](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/meetup/doc/presentation.pdf) in case you want to see what changed.
