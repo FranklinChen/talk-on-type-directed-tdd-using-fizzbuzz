@@ -575,8 +575,8 @@
 
   \begin{block}{\texttt{FizzBuzz} demo time!}
     \begin{itemize}
-    \item Two volunteers: to play role of \mintinline{scala}{Rule}.
-    \item One volunteer: to combine sub-results.
+    \item Two volunteers: each to play role of \mintinline{scala}{Rule}.
+    \item One ``manager'' to combine two sub-results.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -609,8 +609,8 @@
   \begin{block}{Demo time!}
     \begin{itemize}
     \item Configuration: \mintinline{scala}{Seq(3 -> "", 5 -> "Buzz")}
-    \item Input: \mintinline{scala}{2}
-    \item Output: should be \mintinline{scala}{""}
+    \item Input: \mintinline{scala}{9} (note: divisible by \mintinline{scala}{3})
+    \item Output: should be \mintinline{scala}{""} (because of the part divisible by \mintinline{scala}{3})
     \item Output was: \mintinline{scala}{"2"}
     \end{itemize}
   \end{block}
@@ -667,10 +667,10 @@
 
   \begin{block}{Demo time!}
     \begin{itemize}
-    \item (Instructions: circle what you write to wrap it with \mintinline{scala}{Some})
+    \item (Instructions: for result \mintinline{scala}{Some(s)}, hold up the string, else don't hold up anything)
     \item Configuration: \mintinline{scala}{Seq(3 -> "", 5 -> "Buzz")}
-    \item Input: \mintinline{scala}{2}
-    \item Output: should be \mintinline{scala}{""}
+    \item Input: \mintinline{scala}{9}
+    \item Output: now correctly is \mintinline{scala}{""}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -770,16 +770,23 @@
   \item \href{http://www.michael-noll.com/blog/2013/12/02/twitter-algebird-monoid-monad-for-large-scala-data-analytics/}{Fantastically important in practice!}
   \end{itemize}
   \end{block}
+  \end{itemize}
+\end{frame}
 
+\begin{frame}[fragile]{Final demo!}
   \begin{block}{Demo time!}
     \begin{itemize}
     \item Configuration: \mintinline{scala}{Seq(3 -> "Fizz", 5 -> "Buzz", 7 -> "Pop", 2 -> "Boom")}
+    \item Tree of volunteers to simulate concurrency:
+      \begin{itemize}
+      \item Four at leaves.
+      \item Two ``middle managers'' each handling two leaves.
+      \item One top-level manager handling two middle managers.
+      \end{itemize}
     \item Input: \mintinline{scala}{42}
     \item Output: \mintinline{scala}{"FizzPopBoom"}
     \end{itemize}
   \end{block}
-  \end{itemize}
-
 \end{frame}
 
 \begin{frame}[fragile]{Final parallelized code}

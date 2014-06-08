@@ -1,5 +1,5 @@
   val parallelCompile: Compiler = { case Config(pairs) =>
-    val rules = pairs.toArray
+    val rules = pairs.
       toArray.
       toPar.
       map(buildRule)
