@@ -16,6 +16,12 @@ An expressive static type system is one of the most joyful and powerful tools fo
 
 The Scala language will be used the vehicle for this demonstration, but the techniques apply immediately to any industrial-strength statically typed language, such as Haskell, OCaml, F#, Rust, Swift.
 
+### Photos
+
+[![Photo of Franklin](https://pbs.twimg.com/media/BpjViavIAAAK0du.jpg)](https://twitter.com/cwinters/status/475364551584522240)
+
+<a href="http://twitpic.com/e5o777" title=" ah, the beauty of pattern matching #scala #PGHTechFest @fran... on Twitpic"><img src="http://twitpic.com/show/thumb/e5o777.jpg" width="150" height="150" alt=" ah, the beauty of pattern matching #scala #PGHTechFest @fran... on Twitpic"></a>
+
 ### Article and slides
 
 I strongly recommend reading the [*article*](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/master/doc/article.pdf).
