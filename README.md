@@ -38,6 +38,10 @@ The code goes a bit beyond what was covered in the presentation. There is additi
 
 The presentation deliberately stayed focused on the *core* FizzBuzz problem rather than go into the  questions of modular organization in the large, which differ more depending on the language. For example, we would probably use signatures/structures/functors in OCaml, and type classes in Haskell.
 
+#### Coding style
+
+For didactic purposes, to focus on functional programming, I presented code using first-class functions rather than the more idiomatic and realistic use of *traits*, classes, and methods. In real life, of course, I would use the host language's idiomatic features for maximum clarity and flexibility.
+
 ### Old stuff
 
 A rough practice version of the presentation was given at the [Pittsburgh Scala Meetup](http://www.meetup.com/Pittsburgh-Scala-Meetup) earlier, [on May 15, 2014](http://www.meetup.com/Pittsburgh-Scala-Meetup/events/174013492/). I don't recommend even looking at them, because much has been improved.
