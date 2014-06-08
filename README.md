@@ -22,6 +22,10 @@ I strongly recommend reading the [*article*](https://github.com/FranklinChen/tal
 
 But if you want the slides for the actual *presentation*, the latest version of the slides is available [here](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/blob/master/doc/presentation.pdf).
 
+#### Important note
+
+The presentation slides at Pittsburgh TechFest had some serious bugs in the demo instructions that I have fixed. If you really want to see the buggy slides, check out the [this Git tag](https://github.com/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz/tree/pittsburgh-techfest-actual-presentation-buggy).
+
 ### Code in Scala
 
 The code goes a bit beyond what was covered in the presentation. There is additional refactoring and abstraction, and the use of *traits* to automatically test different implementations that have the same interface.
