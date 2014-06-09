@@ -132,7 +132,7 @@
 
   \begin{block}{Some decent practical typed languages}
     \begin{itemize}
-    \item \href{http://ocaml.org/}{OCaml}: 20 years old
+    \item \href{http://swift.org/}{OCaml}: 20 years old
     \item \href{http://www.haskell.org/}{Haskell}: 20 years old
     \item \href{http://www.scala-lang.org/}{Scala}: 10 years old
     \item \href{http://developer.apple.com/swift/}{Swift}: 5 days old
@@ -157,7 +157,7 @@
       \mode<article|handout>{
         \item (Developed using 1980s-1990s knowledge)
       }
-    \item ML (\href{http://www.smlnj.org/}{Standard ML}, \href{http://ocaml.org/}{OCaml}, \href{http://fsharp.org/}{F\#}): I first used for work in 1995
+    \item ML (\href{http://www.smlnj.org/}{Standard ML}, \href{http://swift.org/}{OCaml}, \href{http://fsharp.org/}{F\#}): I first used for work in 1995
     \item \href{http://www.haskell.org/}{Haskell}: I first used for work in 1995
     \item \href{http://www.scala-lang.org/}{Scala}: first released in 2004
     \item \href{http://developer.apple.com/swift/}{Swift}: announced by Apple on June 2, 2014!
@@ -244,7 +244,7 @@
 \end{frame}
 
 \begin{frame}<article|handout>[fragile]{TDD in Swift}
-  \inputminted{ocaml}{MainSpec1.swift}
+  \inputminted{swift}{MainSpec1.swift}
 \end{frame}
 
 \begin{frame}[fragile]{Test passes type check, but fails}
@@ -269,7 +269,7 @@
 \end{frame}
 
 \begin{frame}<article|handout>[fragile]{Swift version of driver}
-  \inputminted{ocaml}{Main4.swift}
+  \inputminted{swift}{Main4.swift}
 \end{frame}
 
 \subsection{Test-driven units}
@@ -376,7 +376,7 @@
 \begin{frame}<article|handout>[fragile]{Swift digression: pattern matching}
   The same solution, in Swift:
 
-  \inputminted{ocaml}{FizzBuzz2.swift}
+  \inputminted{swift}{FizzBuzz2.swift}
 \end{frame}
 
 \begin{frame}[fragile]{Acceptance test passes}
@@ -703,14 +703,14 @@
 
   \begin{block}{Normal optional type}
     \begin{itemize}
-    \item \mintinline{ocaml}{A?} is a type for each type \mintinline{scala}{A}.
+    \item \mintinline{swift}{A?} is a type for each type \mintinline{scala}{A}.
     \item Must unwrap explicitly.
     \end{itemize}
   \end{block}
 
   \begin{block}{Implicit unwrapped optional type}
     \begin{itemize}
-    \item \mintinline{ocaml}{A!} is a type for each type \mintinline{scala}{A}.
+    \item \mintinline{swift}{A!} is a type for each type \mintinline{scala}{A}.
     \item Unfortunate type hole:
       \begin{quote}
         If you try to access an implicitly unwrapped optional when it
@@ -721,7 +721,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{The same thing, in Swift}
-  \inputminted{ocaml}{FizzBuzz8.swift}
+  \inputminted{swift}{FizzBuzz8.swift}
 \end{frame}
 
 \subsection{Transform information; don't destroy it}
@@ -753,7 +753,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Bonus: the final code in Swift}
-  \inputminted{ocaml}{FizzBuzzFinal.swift}
+  \inputminted{swift}{FizzBuzzFinal.swift}
 \end{frame}
 
 
