@@ -15,7 +15,7 @@ version := "1.0.0"
 scalaVersion := "2.11.1"
 
 libraryDependencies ++= Seq(
-  "com.github.scala-blitz" %% "scala-blitz" % "1.0-M4",
+  "com.github.scala-blitz" %% "scala-blitz" % "1.1",
   "org.scalaz.stream" %% "scalaz-stream" % "0.4.1",
   "org.scalaz" %% "scalaz-core" % "7.0.6",
   "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
