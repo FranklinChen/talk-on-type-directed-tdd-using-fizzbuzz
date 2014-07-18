@@ -19,7 +19,7 @@ libraryDependencies ++= Seq(
   "org.scalaz.stream" %% "scalaz-stream" % "0.4.1",
   "org.scalaz" %% "scalaz-core" % "7.0.6",
   "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
-  "org.specs2" %% "specs2" % "2.3.12" % "test"
+  "org.specs2" %% "specs2" % "2.3.13" % "test"
 )
 
 resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
