@@ -1,5 +1,5 @@
 typealias Evaluator = Int -> String
-typealias Config = (Int, String)[]
+typealias Config = [(Int, String)]
 typealias Compiler = Config -> Evaluator
 typealias Rule = Int -> String?
     
@@ -8,7 +8,7 @@ let buildRule: ((Int, String)) -> Rule = { n, word in
 }
 
 let compile: Compiler = { pairs in
-  let rules: Rule[] = pairs.map(buildRule)
+  let rules: [Rule] = pairs.map(buildRule)
   return { i in
     let wordOptions = rules.map { rule in rule(i) }
     let combinedOption = wordOptions.reduce(nil, addOption)
