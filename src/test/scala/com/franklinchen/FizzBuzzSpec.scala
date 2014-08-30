@@ -9,7 +9,8 @@ import ArbitraryConfig._
 
 /** For original FizzBuzz and FizzBuzz with config. */
 trait FizzBuzzSpec extends Specification
-    with ScalaCheck { def is = s2"""
+    with ScalaCheck {
+  def is = s2"""
   ${evaluate(15) ==== "FizzBuzz"}
   ${evaluate(20) ==== "Buzz"}
   ${evaluate(6) ==== "Fizz"}

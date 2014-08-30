@@ -8,7 +8,8 @@ import FizzBuzz._
 import ArbitraryConfig._
 
 trait FizzBuzzPopSpec extends Specification
-    with ScalaCheck { def is = s2"""
+    with ScalaCheck {
+  def is = s2"""
   ${evaluate(2) ==== "2"}
   ${evaluate(21) ==== "FizzPop"}
   ${evaluate(9) ==== "Fizz"}
@@ -29,5 +30,5 @@ trait FizzBuzzPopSpec extends Specification
         (i % d1 == 0 && i % d2 != 0 && i % d3 != 0) ==>
         { evaluate(i) ==== w1 }
       }
-    }.set(maxDiscardRatio = 10000)
+    }.set(maxDiscardRatio = 1000)
 }

@@ -7,6 +7,8 @@ import Arbitrary.arbitrary
 import FizzBuzz._
 
 object ArbitraryConfig {
+  import shapeless.contrib.scalacheck._
+
   /** Only generates a pair. */
   val arbitraryConfig: Arbitrary[Config] =  Arbitrary {
     for {
