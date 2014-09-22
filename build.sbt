@@ -19,7 +19,7 @@ libraryDependencies ++= Seq(
   "org.scalaz.stream" %% "scalaz-stream" % "0.5",
   "org.scalaz" %% "scalaz-core" % "7.1.0",
   "org.scalacheck" %% "scalacheck" % "1.11.5" % "test",
-  "org.specs2" %% "specs2" % "2.4.1" % "test",
+  "org.specs2" %% "specs2" % "2.4.4" % "test",
   "org.typelevel" %% "shapeless-scalacheck" % "0.3" % "test"
 )
 

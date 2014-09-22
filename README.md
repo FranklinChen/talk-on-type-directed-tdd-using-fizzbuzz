@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz.png)](https://travis-ci.org/FranklinChen/talk-on-type-directed-tdd-using-fizzbuzz)
 
-(Note: Travis seems to be having problems with timeouts or something downloading Scala library dependencies. This project builds fine, if you do it locally.)
-
 Presentation for [Pittsburgh TechFest](http://pghtechfest.com/) 2014, Saturday June 7, 2014.
 
 This repository contains Scala code. The Swift code is [here](https://github.com/franklinchen/fizzbuzz-swift).
