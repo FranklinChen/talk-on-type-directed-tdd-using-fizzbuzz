@@ -18,8 +18,8 @@ libraryDependencies ++= Seq(
   "com.github.scala-blitz" %% "scala-blitz" % "1.2",
   "org.scalaz.stream" %% "scalaz-stream" % "0.5a",
   "org.scalaz" %% "scalaz-core" % "7.1.0",
-  "org.scalacheck" %% "scalacheck" % "1.11.6" % "test",
-  "org.specs2" %% "specs2" % "2.4.11" % "test",
+  "org.scalacheck" %% "scalacheck" % "1.12.0" % "test",
+  "org.specs2" %% "specs2" % "2.4.13" % "test",
   "org.typelevel" %% "shapeless-scalacheck" % "0.3" % "test"
 )
 
