@@ -12,15 +12,12 @@ description := "Exploring type-directed TDD with FizzBuzz"
 
 version := "1.0.0"
 
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.7"
 
 libraryDependencies ++= Seq(
   "com.github.scala-blitz" %% "scala-blitz" % "1.2",
-  "org.scalaz.stream" %% "scalaz-stream" % "0.5a",
-  "org.scalaz" %% "scalaz-core" % "7.1.0",
-  "org.scalacheck" %% "scalacheck" % "1.12.0" % "test",
-  "org.specs2" %% "specs2" % "2.4.13" % "test",
-  "org.typelevel" %% "shapeless-scalacheck" % "0.3" % "test"
+  "org.scalaz" %% "scalaz-core" % "7.2.0",
+  "org.specs2" %% "specs2-core" % "3.7" % Test,
+  "org.specs2" %% "specs2-scalacheck" % "3.7" % Test,
+  "org.typelevel" %% "shapeless-scalacheck" % "0.4" % Test
 )
-
-resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"

@@ -5,7 +5,6 @@ import org.scalacheck._
 import org.scalacheck.Prop._
 
 import FizzBuzz._
-import ArbitraryConfig._
 
 /** For original FizzBuzz and FizzBuzz with config. */
 trait FizzBuzzSpec extends Specification
@@ -46,8 +45,10 @@ trait FizzBuzzSpec extends Specification
       { evaluate(i) ==== i.toString }
     }.set(maxDiscardRatio = 100)
 
+  implicit def arbitraryConfig = ArbitraryConfig.arbitraryConfig
+
   def `Arbitrary pair of divisors: divisible by first` =
-    arbitraryConfig { config: Config =>
+    prop { config: Config =>
       val evaluate = FizzBuzz.compile(config)
       // TODO: non-exhaustive
       val Config(Seq((d1, w1), (d2, _))) = config

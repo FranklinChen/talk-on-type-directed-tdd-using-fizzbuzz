@@ -5,7 +5,6 @@ import org.scalacheck._
 import org.scalacheck.Prop._
 
 import FizzBuzz._
-import ArbitraryConfig._
 
 trait FizzBuzzPopSpec extends Specification
     with ScalaCheck {
@@ -21,8 +20,10 @@ trait FizzBuzzPopSpec extends Specification
 
   def evaluate: FizzBuzz.Evaluator
 
+  implicit def arbitraryTripleConfig = ArbitraryConfig.arbitraryTripleConfig
+
   def `Arbitrary triple of divisors: divisible by first` =
-    arbitraryTripleConfig { config: Config =>
+    prop { config: Config =>
       val evaluate = FizzBuzz.compile(config)
       // TODO: non-exhaustive
       val Config(Seq((d1, w1), (d2, _), (d3, _))) = config
